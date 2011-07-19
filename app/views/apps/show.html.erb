@@ -1,0 +1,21 @@
+<div class="exception-title"><h1><%= @app.name %></h1></div>
+<div class="block">
+  <ul>
+    <li><strong>Created:</strong> <%= @app.created_at.to_s(:short) %></li>
+    <li><strong>API Key:</strong> <%= @app.api_key %></li>
+    <li><strong>Status:</strong> <%= @app.enabled ? 'Active' : 'Disabled' %></li>
+  </ul>
+</div>
+<div class="block">
+  <%= link_to 'Edit', edit_app_path(@app), :class => 'button' %>
+  <%= link_to 'Reset API key', app_generate_key_path(@app), :confirm => "Are you sure?", :class => 'button' %>
+  <%= link_to 'Delete', app_path(@app), :method => :delete, :confirm => "Are you sure?", :class => 'button' %>
+</div>
+<div class="block">
+  <h3>Active Issues</h3>
+  <%= render_crashes_table(@active_issues) %>
+</div>
+<div class="block">
+  <h3>Closed Issues</h3>
+  <%= render_crashes_table(@closed_issues) %>
+</div>

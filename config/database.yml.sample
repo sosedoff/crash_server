@@ -1,0 +1,23 @@
+development:
+  adapter: mysql2
+  host: localhost
+  database: crashserver_dev
+  user: root
+  pool: 5
+  timeout: 5000
+  
+test:
+  adapter: mysql2
+  host: localhost
+  database: crashserver_test
+  user: root
+  pool: 5
+  timeout: 5000
+  
+production:
+  adapter: mysql2
+  host: localhost
+  database: crashserver_production
+  user: root
+  pool: 5
+  timeout: 5000

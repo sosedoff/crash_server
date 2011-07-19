@@ -1,0 +1,52 @@
+<div class="exception-title">
+  <h1>
+    <span class="<%= @crash.status %>"><%= @crash.status %></span>
+    <%= @crash.to_s %>
+  </h1>
+</div>
+<% if @crash.open? %>
+  <div class="block">
+    <%= link_to 'Close this issue', app_crash_close_path(@app, @crash), :class => 'button' %>
+  </div>
+<% end %>
+<div class="block">
+  <h3>Overview</h3>
+  <ul>
+    <li>First occurred on: <%= @crash.created_at.strftime("%B %d %Y, %H:%I:%S") %></li>
+    <li>Last occurred on: <%= @crash.last_occurred_at.strftime("%B %d %Y, %H:%I:%S") %></li>
+    <li>Total occurrences: <%= @crash.occurrences %></li>
+  </ul>
+</div>
+<div class="block request">
+  <div class="request-string">
+    <%= @env['REQUEST_METHOD'] %> <%= @env['SERVER_PROTOCOL'] =~ /https/ ? 'https://' : 'http://' %><%= @env['HTTP_HOST'] %><%= @env['REQUEST_PATH'] %>
+  </div>
+  <% if @crash.framework == 'rails' %>
+    <div class="rails-info">
+      <span>Controller: </span><%= @env['action_dispatch.request.path_parameters']['controller'] %>#<%= @env['action_dispatch.request.path_parameters']['action'] %>
+    </div>
+  <% end %>
+</div>
+<div class="block">
+  <h3>Client</h3>
+  <ul>
+    <li><strong>Agent:</strong> <%= @env['HTTP_USER_AGENT'] %></li>
+    <li><strong>IP:</strong> <%= @env['REMOTE_ADDR'] %></li>
+  </ul>
+</div>
+<div class="block environment">
+  <h3>Environment</h3>
+  <table class="env">
+    <% keys = @env.keys.sort %>
+    <% keys.each do |k| v = @env[k] %>
+      <tr>
+        <td class="key"><%= k %></td>
+        <td class="value"><p><%= v %></p></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="block">
+  <h3>Backtrace</h3>
+  <pre class="backtrace"><%= render_backtrace(@crash.backtrace) %></pre>
+</div>

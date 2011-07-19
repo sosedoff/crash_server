@@ -1,0 +1,28 @@
+<table class="issues-list" cellpadding="0" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Exception</th>
+      <th>First time</th>
+      <th>Last time</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% unless crashes.empty? %>
+      <% crashes.each do |c| %>
+        <tr>
+          <td class="field-status"><span class="<%= c.status %>"><%= c.status %></span></td>
+          <td class="field-name"><%= link_to c.to_s, app_crash_path(@app, c) %></td>
+          <td class="field-time"><%= c.created_at.to_s(:long) %></td>
+          <td class="field-time"><%= c.last_occurred_at.to_s(:long) %></td>
+          <td class="field-occurrences"><%= c.occurrences %></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="5"><p class="no-records">No records found.</p></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

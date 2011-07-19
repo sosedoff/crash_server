@@ -1,0 +1,17 @@
+<div class="exception-title">
+  <h1>Applications</h1>
+</div>
+<div class="block">
+  <%= link_to 'New Application', new_app_path, :class => 'button' %>
+</div>
+
+<% @apps.each do |app| %>
+  <div class="block">
+    <h3><%= app.name %></h3>
+    <ul>
+      <li><strong>Open issues:</strong> <%= app.crashes.active.count %></li>
+      <li><strong>Closed issues:</strong> <%= app.crashes.closed.count %>
+    </ul>
+    <%= link_to 'view', app_path(app), :class => 'button' %>
+  </div>
+<% end %>
