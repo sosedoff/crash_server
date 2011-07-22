@@ -136,8 +136,8 @@ table.issues-list td.field-status span {
   font-size: 11px;
 }
 
-table.issues-list td.field-status span.open { background: #DD2137 !important; }
-table.issues-list td.field-status span.closed { background: #40A03E !important; }
+table.issues-list td.field-status span.open, table.issues-list td.field-status span.rollback { background: #DD2137 !important; }
+table.issues-list td.field-status span.closed, table.issues-list td.field-status span.deploy { background: #40A03E !important; }
 
 
 /* -------------------------------------------------------------------------- */

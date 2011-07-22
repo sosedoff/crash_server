@@ -1,0 +1,30 @@
+<table class="issues-list" cellpadding="0" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Branch</th>
+      <th>Revision</th>
+      <th>Message</th>
+      <th>Deployer</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% unless deployments.empty? %>
+      <% deployments.each do |d| %>
+        <tr>
+          <td class="field-status"><span class="<%= d.action %>"><%= d.action %></span></td>
+          <td><%= d.source_branch %></td>
+          <td><%= d.source_revision[0..7] %></td>
+          <td><%= d.message %></td>
+          <td class="field-name"><%= d.deployer_user %> @ <%= d.deployer_hostname %></td>
+          <td class="field-time"><%= d.created_at.to_s(:long) %></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="5"><p class="no-records">No records found.</p></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

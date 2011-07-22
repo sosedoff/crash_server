@@ -1,5 +1,6 @@
 class AppsController < ApplicationController
-  before_filter :find_app, :except => [:index, :new, :create, :exception]
+  before_filter :find_app, :except => [:index, :new, :create, :exception, :capistrano]
+  before_filter :find_api_by_api_key, :only => [:exception, :capistrano]
   
   def index
     @apps = App.all
@@ -8,6 +9,7 @@ class AppsController < ApplicationController
   def show
     @active_issues = @app.crashes.active
     @closed_issues = @app.crashes.closed
+    @deployments   = @app.deployments
   end
   
   def new
@@ -57,16 +59,32 @@ class AppsController < ApplicationController
     return redirect_to app_path(@app)
   end
   
-  # Primary API endpoint
+  # Primary API endpoint for exceptions
   # POST /exception
   def exception
-    app = App.find_by_api_key(params['api_key'])
-    if app.nil?
-      return render :json => {:error => "Invalid API key."}
-    end
-    
     data = params['crash']
-    app.register_crash(data)
+    @app.register_crash(data)
+    render :json => {:success => true}
+  end
+  
+  # Primary API endpoint for capistrano deployments
+  # POST /capistrano
+  def capistrano
+    p = MultiJson.decode(params[:payload])
+    capistrano = p['capistrano']
+    
+    @app.deployments.create(
+      :capistrano_version => capistrano['version'],
+      :payload_version    => p['payload_version'],
+      :deployer_user      => capistrano['deployer']['user'],
+      :deployer_hostname  => capistrano['deployer']['hostname'],
+      :source_branch      => capistrano['source']['branch'],
+      :source_revision    => capistrano['source']['revision'],
+      :source_repository  => capistrano['source']['repository'],
+      :action             => capistrano['action'],
+      :message            => capistrano['message'],
+      :created_at         => capistrano['timestamp']
+    )
     
     render :json => {:success => true}
   end

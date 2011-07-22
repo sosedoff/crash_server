@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110719010829) do
+ActiveRecord::Schema.define(:version => 20110722211554) do
 
   create_table "apps", :force => true do |t|
     t.string   "name",       :limit => 64,                   :null => false
@@ -38,5 +38,22 @@ ActiveRecord::Schema.define(:version => 20110719010829) do
   end
 
   add_index "crashes", ["uuid"], :name => "index_crashes_on_uuid"
+
+  create_table "deployments", :force => true do |t|
+    t.integer  "app_id",                            :null => false
+    t.string   "action",             :limit => 32
+    t.string   "message"
+    t.string   "capistrano_version", :limit => 16
+    t.string   "payload_version",    :limit => 16
+    t.string   "deployer_user",      :limit => 64
+    t.string   "deployer_hostname",  :limit => 128
+    t.string   "source_branch",      :limit => 64
+    t.string   "source_revision",    :limit => 64
+    t.string   "source_repository"
+    t.datetime "created_at"
+  end
+
+  add_index "deployments", ["app_id", "action"], :name => "index_deployments_on_app_id_and_action"
+  add_index "deployments", ["app_id"], :name => "index_deployments_on_app_id"
 
 end

@@ -2,6 +2,7 @@ class App < ActiveRecord::Base
   include Payload
   
   has_many :crashes, :dependent => :destroy
+  has_many :deployments, :dependent => :destroy
   
   validates_presence_of   :name, :api_key
   validates_length_of     :name, :within => 2..64

@@ -15,4 +15,8 @@ module ApplicationHelper
   def render_crashes_table(records)
     render :partial => 'shared/crashes_table', :locals => {:crashes => records}
   end
+  
+  def render_deployments_table(records)
+    render :partial => 'shared/deployments_table', :locals => {:deployments => records}
+  end
 end
